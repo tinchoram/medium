@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  ram-web:
+    image: tinchoram/ram-web
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ram-web.rule=(Host(`tinchoram.com`)) || (Host(`www.tinchoram.com`))"
+      - "traefik.http.routers.ram-web.entrypoints=websecure"
+      - "traefik.http.routers.ram-web.tls=true"
+      - "traefik.http.routers.ram-web.tls.certresolver=le"
+      - "traefik.http.services.ram-web.loadbalancer.server.port=3000"
+networks:
+  traefik-net:
+    external: true

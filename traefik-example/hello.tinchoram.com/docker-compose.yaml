@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  hello-app:
+    image: gcr.io/google-samples/hello-app:2.0
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hello-app.rule=Host(`hello.tinchoram.com`) || (Host(`tinchoram.com`) && Path(`/v2`))"
+      - "traefik.http.routers.hello-app.entrypoints=websecure"
+      - "traefik.http.routers.hello-app.tls=true"
+      - "traefik.http.routers.hello-app.tls.certresolver=le"
+      - "traefik.http.services.hello-app.loadbalancer.server.port=8080"
+networks:
+  traefik-net:
+    external: true
